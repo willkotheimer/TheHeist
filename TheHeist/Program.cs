@@ -11,9 +11,10 @@ namespace TheHeist
 
             Console.WriteLine("Please enter the difficulty level of the bank (1-100):");
             int BankDifficultyLevel = int.Parse(Console.ReadLine());
+            Bank myBank = new Bank(BankDifficultyLevel);
 
             bool keepRecruiting = true;
-            List<TeamMember> team = new List<TeamMember>();
+            Team team = new Team();
 
             while(keepRecruiting)
         {
@@ -29,7 +30,7 @@ namespace TheHeist
 
                     var teamMember = new TeamMember(name, skillLevel, courageFactor);
 
-                    team.Add(teamMember);
+                    team.addTeamMember(teamMember);
 
                     continue;
                 }
@@ -38,7 +39,7 @@ namespace TheHeist
                     keepRecruiting = false;
                 }
 
-                Console.WriteLine($"There are {team.Count} members in the team.");
+                Console.WriteLine($"There are {team.getCount()} members in the team.");
 
                 Console.WriteLine("Enter the number of times to run the similation");
 
@@ -46,18 +47,16 @@ namespace TheHeist
 
                 for(var number = 0; number <= numberOfTimes; number++)
                 {
-                    
-                    Random rnd = new Random();
-                    int luckValue = rnd.Next(-10, 10);
-                    BankDifficultyLevel += luckValue;
+
+                    myBank.modifyingLuck();
                     double teamSkillLevel = 0;
-                    foreach (var member in team)
+                    foreach (var member in team.group)
                     {
                         teamSkillLevel += member.SkillLevel;
                     }
 
                     Console.WriteLine($"Teams Combined Skill Level = {teamSkillLevel}");
-                    Console.WriteLine($"Banks Difficulty Level = {BankDifficultyLevel}");
+                    Console.WriteLine($"Banks Difficulty Level = {myBank.DifficultyLevel}");
                     if (teamSkillLevel >= BankDifficultyLevel)
                     {
                         Console.WriteLine($"Success");
@@ -68,9 +67,6 @@ namespace TheHeist
                     }
 
                 }
-
-
-
 
             }
 
